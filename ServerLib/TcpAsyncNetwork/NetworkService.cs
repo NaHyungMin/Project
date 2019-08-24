@@ -95,7 +95,7 @@ namespace ServerLib.TcpAsyncNetwork
             if (OnSessionEventHandler != null)
             {
                 UserToken userToken = receiveSocketAsyncEventArgs.UserToken as UserToken;
-                OnSessionEventHandler(ref userToken); 
+                OnSessionEventHandler(userToken); 
             }
 
             // 클라이언트 데이터 수신 준비
@@ -106,6 +106,7 @@ namespace ServerLib.TcpAsyncNetwork
         {
             // receive_args, send_args 아무곳에서나 꺼내와도 된다. 둘다 동일한 CUserToken을 물고 있다.  
             UserToken token = receiveArgs.UserToken as UserToken;
+            sendArgs.UserToken = token; //sendArgs에도 연결해준다.
             token.SetEventArgs(receiveArgs, sendArgs);
 
             // 생성된 클라이언트 소켓을 보관해 놓고 통신할 때 사용한다.  
