@@ -81,7 +81,6 @@ namespace ShareLib.TcpNetwork.Client
                 where ResponsePacket : class, IClientPacket, new()
             {
                 //foreach(ResponseCallback < ResponsePacket> call in )
-
             }
         }
     }

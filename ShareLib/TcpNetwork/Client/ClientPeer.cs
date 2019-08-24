@@ -28,7 +28,9 @@ namespace ShareLib.TcpNetwork.Client
         public void OnMessage(PacketHeader packetHeader, byte[] packetMessage)
         {
             //token
-            throw new NotImplementedException();
+            var responsePacket = MessagePack.MessagePackSerializer.Typeless.Deserialize(packetMessage) as IClientPacket; //size 119
+
+            //throw new NotImplementedException();
         }
 
         public void OnRemoved()

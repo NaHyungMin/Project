@@ -25,7 +25,7 @@ namespace ServerLib.TcpAsyncNetwork
 
         private TCPAsyncListener listener;
 
-        public delegate void SessionHandler(UserToken token);
+        public delegate void SessionHandler(ref UserToken token);
         public event SessionHandler OnSessionEventHandler;
 
         #region Init Network
@@ -95,7 +95,7 @@ namespace ServerLib.TcpAsyncNetwork
             if (OnSessionEventHandler != null)
             {
                 UserToken userToken = receiveSocketAsyncEventArgs.UserToken as UserToken;
-                OnSessionEventHandler(userToken);
+                OnSessionEventHandler(ref userToken); 
             }
 
             // 클라이언트 데이터 수신 준비
@@ -110,6 +110,7 @@ namespace ServerLib.TcpAsyncNetwork
 
             // 생성된 클라이언트 소켓을 보관해 놓고 통신할 때 사용한다.  
             token.Socket = socket;
+            token.OnConnected();
 
             // 데이터를 받을 수 있도록 소켓 매소드를 호출해준다.  
             // 비동기로 수신할 경우 워커 스레드에서 대기중으로 있다가 Completed에 설정해놓은 매소드가 호출된다.  

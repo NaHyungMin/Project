@@ -15,7 +15,7 @@ namespace GameServer.ServerLogic
     {
         public ConnectionResponse Run(ConnectionRequest requestPacket, ConnectionResponse responsePacket)
         {
-            responsePacket.Message = "안녕하세요!";
+            responsePacket.Message = "안녕하세요! 여러분~~";
 
             return responsePacket;
         }

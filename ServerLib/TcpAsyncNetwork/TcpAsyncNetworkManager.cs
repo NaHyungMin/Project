@@ -41,7 +41,7 @@ namespace ServerLib.TcpAsyncNetwork
 
         public bool StartServer()
         {
-             networkService = new NetworkService(MaxConnections, SendBufferBlockSize, ReceBufferBlockSize);
+            networkService = new NetworkService(MaxConnections, SendBufferBlockSize, ReceBufferBlockSize);
 
             networkService.OnSessionEventHandler += NetworkService_OnSessionEventHandler;
 

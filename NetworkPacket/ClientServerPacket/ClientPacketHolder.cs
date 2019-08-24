@@ -4,7 +4,7 @@ namespace NetworkPacket.ClientServerPacket
 {
     public class ClientPacketHolder<T> where T : IClientPacket
     {
-        public T Clone<T>()
+        public T Clone()
         {
             return (T)this.MemberwiseClone();
         }
