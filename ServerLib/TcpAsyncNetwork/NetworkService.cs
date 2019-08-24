@@ -25,7 +25,7 @@ namespace ServerLib.TcpAsyncNetwork
 
         private TCPAsyncListener listener;
 
-        public delegate void SessionHandler(ref UserToken token);
+        public delegate void SessionHandler(UserToken token);
         public event SessionHandler OnSessionEventHandler;
 
         #region Init Network
