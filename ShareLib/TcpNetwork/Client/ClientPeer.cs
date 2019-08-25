@@ -10,12 +10,14 @@ namespace ShareLib.TcpNetwork.Client
 {
     public class ClientPeer : IPeer
     {
-        private UserToken token = new UserToken();
+        private readonly ClientRequester clientRequester;
+        private readonly UserToken token;
 
         public ClientPeer() { }
 
-        public ClientPeer(UserToken token)
+        public ClientPeer(ClientRequester clientRequester,  UserToken token)
         {
+            this.clientRequester = clientRequester;
             this.token = token;
             this.token.Peer = this;
         }
@@ -28,7 +30,8 @@ namespace ShareLib.TcpNetwork.Client
         public void OnMessage(PacketHeader packetHeader, byte[] packetMessage)
         {
             //token
-            var responsePacket = MessagePack.MessagePackSerializer.Typeless.Deserialize(packetMessage) as IClientPacket; //size 119
+            IClientPacket responsePacket = MessagePack.MessagePackSerializer.Typeless.Deserialize(packetMessage) as IClientPacket; //size 119
+            clientRequester.Response(responsePacket);
 
             //throw new NotImplementedException();
         }
@@ -40,7 +43,10 @@ namespace ShareLib.TcpNetwork.Client
 
         public void Send(IRequestItem requestItem)
         {
-            token.Send(requestItem);
+            if (token == null)
+                throw new NullReferenceException();
+
+            this.token.Send(requestItem);
         }
     }
 }

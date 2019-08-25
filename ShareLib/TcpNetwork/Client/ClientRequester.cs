@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 using ShareLib.TcpNetwork.Interface;
 
 namespace ShareLib.TcpNetwork.Client
@@ -18,7 +14,7 @@ namespace ShareLib.TcpNetwork.Client
         private IPeer server;
         private Requester requester;
         private ConcurrentQueue<RequestHolder> concurrentQueue = new ConcurrentQueue<RequestHolder>();
-         
+        
         public ClientRequester(string ip, Int16 port, Int32 logicVersion, Int32 contentsVersion)
         {
             ClientNetworkService networkService = new ClientNetworkService(2048, 8192);
@@ -36,14 +32,14 @@ namespace ShareLib.TcpNetwork.Client
         {
             lock (lockObejct)
             {
-                server = new ClientPeer(serverToken);
+                server = new ClientPeer(this, serverToken);
                 serverToken.OnConnected();
 
                 Console.WriteLine("Connected!");
 
                 return true;
             }
-        }  
+        }
         
         public bool Request<RequestPacket, ResponsePacket>(RequestPacket requestPacket, ResponseCallback<RequestPacket, ResponsePacket> responseCallback)
             where RequestPacket : IServerPacket
@@ -62,9 +58,14 @@ namespace ShareLib.TcpNetwork.Client
             return true;
         }
 
-        public void Response()
+        public void Response<ResponsePacket>(ResponsePacket responsePacket)
+            where ResponsePacket : IClientPacket
         {
-
+            //네트워크 환경으로 인해, 서버에서 뒤죽박죽 들어온다면? 결국 시리얼 넘버를 보내야 하나...
+            //어차피 클라이언트도 똑같은 패킷을 두 개 받는다면 다 쓰진 않을것이다.
+            //그럼 하나만 등록시켜놓고 데이터가 오지 않으면 정해진 횟수만큼 서버에 보내고, 데이터가 돌아오면 다 삭제를 해버릴까?
+            concurrentQueue.
+            //concurrentQueue
         }
 
         private class RequestHolder

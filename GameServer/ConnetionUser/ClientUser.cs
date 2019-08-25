@@ -10,13 +10,13 @@ namespace GameServer.ConnetionUser
     public class ClientUser : IPeer
     {
         private readonly UserToken token;
-
+ 
         public ClientUser() { }
 
         public ClientUser(UserToken token)
         {
             this.token = token;
-            token.Peer = this;
+            this.token.Peer = this;
         }
 
         public void Disconnect()
@@ -73,7 +73,10 @@ namespace GameServer.ConnetionUser
 
         public void Send(IRequestItem requestItem)
         {
-            token.Send(requestItem);
+            if (token == null)
+                throw new NullReferenceException();
+
+            this.token.Send(requestItem);
         }
     }
 }
